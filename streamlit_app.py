@@ -36,6 +36,9 @@ streamlit.header('Fruityvice Fruit Advice!')
 norm_fruityvice = pd.json_normalize(fruityvice_response.json())
 streamlit.dataframe(norm_fruityvice)
 
+# stopping for debug
+streamlit.stop()
+
 # snowflake connector
 
 my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
