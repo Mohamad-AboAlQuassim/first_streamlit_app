@@ -26,17 +26,21 @@ fruits_selected = streamlit.multiselect("Pick some fruits:", list(my_fruit_list.
 show_fruits = my_fruit_list.loc[fruits_selected]
 streamlit.dataframe(show_fruits)
 
+# normalized df function
+
+def get_fruityvice_data(this_fruit_choice):
+  #fruity vice api data normalized into df
+  fruityvice_response = r.get(f"https://fruityvice.com/api/fruit/{fruit_choice}")
+  return pd.json_normalize(fruityvice_response.json())
 
 #fruit input for fruityvice api
 streamlit.header('Fruityvice Fruit Advice!')
 try:
-  fruit_choice = streamlit.text_input('What fruit would you like information about?','Kiwi')
+  fruit_choice = streamlit.text_input('What fruit would you like information about?')
   if not fruit_choice:
     streamlit.error("Please select a fruit to get information.")
   else:
-    #fruity vice api data normalized into df
-    fruityvice_response = r.get(f"https://fruityvice.com/api/fruit/{fruit_choice}")
-    norm_fruityvice = pd.json_normalize(fruityvice_response.json())
+    norm_fruityvice = get_fruityvice_data(fruit_choice)
     streamlit.dataframe(norm_fruityvice)
 
 except URLError as e:
