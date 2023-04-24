@@ -20,9 +20,16 @@ streamlit.header('🍌🥭 Build Your Own Fruit Smoothie 🥝🍇')
 # Multi select
 fruits_selected = streamlit.multiselect("Pick some fruits:", list(my_fruit_list.index), ['Avocado', 'Strawberries'])
 
+# selects only requested fruits
 show_fruits = my_fruit_list.loc[fruits_selected]
-
 streamlit.dataframe(show_fruits)
+
+#fruit input for fruityvice api
+fruit_choice = streamlit.text_input('What fruit would you like information about?','Kiwi')
+streamlit.write('The user entered ', fruit_choice)
+
+#fruity vice api data normalized into df
+fruityvice_response = r.get(f"https://fruityvice.com/api/fruit/{fruit_choice}")
 
 streamlit.header('Fruityvice Fruit Advice!')
 norm_fruityvice = pd.json_normalize(fruityvice_response.json())
